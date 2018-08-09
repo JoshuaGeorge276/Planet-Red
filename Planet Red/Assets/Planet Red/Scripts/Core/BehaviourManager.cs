@@ -14,8 +14,6 @@ public class BehaviourManager : SingletonBehaviour<BehaviourManager>
     private float _deltaTime;
     private float _fixedTime;
 
-    private bool FirstCallsMade = false;
-
     public void Awake()
     {
     }

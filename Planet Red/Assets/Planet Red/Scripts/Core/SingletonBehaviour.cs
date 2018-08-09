@@ -14,7 +14,7 @@ public class SingletonBehaviour<T> : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindObjectOfType<T>();
-                if (Instance == null)
+                if (_instance == null)
                 {
                     GameObject obj = new GameObject();
                     obj.name = typeof(T).Name;
