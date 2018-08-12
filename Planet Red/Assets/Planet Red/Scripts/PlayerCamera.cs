@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using PlanetRed.Core;
 using UnityEngine;
 
 public class PlayerCamera : ManagedBehaviour {
