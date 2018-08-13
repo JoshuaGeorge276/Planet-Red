@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using PlanetRed.Core;
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour {
+public class PlayerCamera : ManagedBehaviour {
 
     public GameObject target;
     [Range(0.0f, 1.0f)]
@@ -12,11 +13,18 @@ public class PlayerCamera : MonoBehaviour {
     private Vector3 offset;
 
 	// Use this for initialization
-	void Start () {
+	protected override void Start () 
+	{
+        base.Start();
         offset = transform.position - target.transform.position;
 	}
 
-    private void LateUpdate()
+    public override void ManagedUpdate(float a_fDeltaTime)
+    {
+        
+    }
+
+    public override void ManagedLateUpdate(float a_fDeltaTime)
     {
         transform.position = Vector3.SmoothDamp(transform.position, target.transform.position + offset, ref velocity, followSmoothing);
     }

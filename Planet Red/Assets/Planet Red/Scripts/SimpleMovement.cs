@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using PlanetRed.Core;
 using UnityEngine;
 
-public class SimpleMovement : MonoBehaviour {
+public class SimpleMovement : ManagedBehaviour 
+{
 
     private int ANIM_RUNNING = Animator.StringToHash("Running");
 
@@ -20,9 +22,9 @@ public class SimpleMovement : MonoBehaviour {
         character = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();	
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    public override void ManagedUpdate(float a_fDeltaTime)
+    {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
