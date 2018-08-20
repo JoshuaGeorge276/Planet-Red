@@ -5,18 +5,17 @@ using UnityEngine;
 public class InputPlayer
 {
     public int ID;
-    public InputController controller;
-
-    
+    public InputController Controller;
 
     public InputPlayer()
     {
-        controller = new InputController();
+        Controller = new InputController();
     }
 
     public void Update(float a_fDeltaTime)
     {
-        //controller.
+        Controller.ResetController();
+        Controller.UpdateController(a_fDeltaTime);
     }
 
     public void LateUpdate(float a_fDeltaTime)

@@ -7,15 +7,12 @@ using System.Threading.Tasks;
 
 public interface IInputDevice
 {
-    void UpdateAxis();
-    void UpdateButtons();
-
-    void LateUpdateAxis();
-    void LateUpdateButtons();
+    void UpdateDevice();
+    void LateUpdateDevice();
     void ResetDevice();
 
-    float GetAxis(InputButtonValue a_value);
-    float GetValue(InputButtonValue a_value);
+    float GetAxis(InputAxisValue a_value);
+    int GetButton(InputButtonValue a_value);
 }
 
 public enum InputAxisValue
@@ -29,11 +26,7 @@ public enum InputAxisValue
 
 public enum InputButtonValue
 {
-    LeftStickXAxis,
-    LeftStickYAxis,
     LeftStickButton,
-    RightStickXAxis,
-    RightStickYAxis,
     RightStickButton,
     DPadUp,
     DPadDown,

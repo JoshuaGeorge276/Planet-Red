@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class InputController
 {
-    private float xAxis, yAxis;
+    public IDeviceHandler Device;
 
     public InputController()
     {
-
+        Device = new KeyboardHandler();
     }
 
-    public void UpdateMouse()
+    public void ResetController()
     {
-        
+        Device.ResetDevice();
     }
 
-    public void UpdateAxis()
+    public void UpdateController(float a_fDeltaTime)
     {
-        
-        //Debug.Log(Input.GetKey(KeyCode.Joystick1Button0).ToString()
-        //          Input.GetAxis());
+        Device.UpdateDevice();
     }
 }

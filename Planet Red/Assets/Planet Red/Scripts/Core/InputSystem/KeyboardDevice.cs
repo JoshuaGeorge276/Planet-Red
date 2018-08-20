@@ -18,12 +18,13 @@ class KeyboardDevice : IInputDevice
 
     private Bindings currentBindings;
 
+    private int buttonCount = (int) InputButtonValue.COUNT;
+
     public KeyboardDevice(Bindings a_bindings)
     {
         currentBindings = a_bindings;
 
         int axisCount = (int) InputAxisValue.COUNT;
-        int buttonCount = (int) InputAxisValue.COUNT;
 
         axisValues = new float[axisCount];
         buttonValues = new sbyte[buttonCount];
@@ -31,106 +32,149 @@ class KeyboardDevice : IInputDevice
         axisLookup = new Dictionary<InputAxisValue, string>(axisCount);
         keyLookup = new Dictionary<InputButtonValue, KeyCode>(buttonCount);
 
-        axisLookup[InputAxisValue.LeftX] = currentBindings.LeftXAxis;
-        axisLookup[InputAxisValue.LeftY] = currentBindings.LeftYAxis;
-        axisLookup[InputAxisValue.RightX] = currentBindings.RightXAxis;
-        axisLookup[InputAxisValue.RightY] = currentBindings.RightYAxis;
+        axisLookup[InputAxisValue.LeftX]             = currentBindings.LeftXAxis;
+        axisLookup[InputAxisValue.LeftY]             = currentBindings.LeftYAxis;
+        axisLookup[InputAxisValue.RightX]            = currentBindings.RightXAxis;
+        axisLookup[InputAxisValue.RightY]            = currentBindings.RightYAxis;
 
-        keyLookup[InputButtonValue.Action1] = currentBindings.Action1;
-        keyLookup[InputButtonValue.Action1] = currentBindings.Action2;
-        keyLookup[InputButtonValue.Action1] = currentBindings.Action3;
-        keyLookup[InputButtonValue.Action1] = currentBindings.Action4;
-
-        keyLookup[InputButtonValue.DPadDown] = currentBindings.DPadDown;
-        keyLookup[InputButtonValue.DPadUp] = currentBindings.DPadUp;
-        keyLookup[InputButtonValue.DPadLeft] = currentBindings.DPadLeft;
-        keyLookup[InputButtonValue.DPadRight] = currentBindings.DPadRight;
-        keyLookup[InputButtonValue.LeftTrigger] = currentBindings.LeftTrigger;
-        keyLookup[InputButtonValue.RightTrigger] = currentBindings.RightTrigger;
-        keyLookup[InputButtonValue.LeftBumper] = currentBindings.LeftBumper;
-        keyLookup[InputButtonValue.RightBumper] = currentBindings.RightBumper;
-        keyLookup[InputButtonValue.LeftStickButton] = currentBindings.LeftStickButton;
+        keyLookup[InputButtonValue.LeftStickButton]  = currentBindings.LeftStickButton;
         keyLookup[InputButtonValue.RightStickButton] = currentBindings.RightStickButton;
-        keyLookup[InputButtonValue.Start] = currentBindings.Start;
-        keyLookup[InputButtonValue.Select] = currentBindings.Select;
-        keyLookup[InputButtonValue.Menu] = currentBindings.Menu;
-        keyLookup[InputButtonValue.Return] = currentBindings.Return;
-        keyLookup[InputButtonValue.Pause] = currentBindings.Pause;
-        keyLookup[InputButtonValue.Options] = currentBindings.Options;
 
+        keyLookup[InputButtonValue.DPadDown]         = currentBindings.DPadDown;
+        keyLookup[InputButtonValue.DPadUp]           = currentBindings.DPadUp;
+        keyLookup[InputButtonValue.DPadLeft]         = currentBindings.DPadLeft;
+        keyLookup[InputButtonValue.DPadRight]        = currentBindings.DPadRight;
+
+        
+        keyLookup[InputButtonValue.Action1]          = currentBindings.Action1;
+        keyLookup[InputButtonValue.Action2]          = currentBindings.Action2;
+        keyLookup[InputButtonValue.Action3]          = currentBindings.Action3;
+        keyLookup[InputButtonValue.Action4]          = currentBindings.Action4;
+
+
+        keyLookup[InputButtonValue.LeftTrigger]      = currentBindings.LeftTrigger;
+        keyLookup[InputButtonValue.RightTrigger]     = currentBindings.RightTrigger;
+
+        keyLookup[InputButtonValue.Start]            = currentBindings.Start;
+        keyLookup[InputButtonValue.Return]           = currentBindings.Return;
+        keyLookup[InputButtonValue.Select]           = currentBindings.Select;
+        keyLookup[InputButtonValue.Pause]            = currentBindings.Pause;
+        keyLookup[InputButtonValue.Menu]             = currentBindings.Menu;
+        keyLookup[InputButtonValue.Options]          = currentBindings.Options;
+
+
+        keyboardAxis = new TwoAxisInput(axisLookup[InputAxisValue.LeftX], axisLookup[InputAxisValue.LeftY]);
+        mouseAxis = new TwoAxisInput(axisLookup[InputAxisValue.RightX], axisLookup[InputAxisValue.RightY]);
+        mouseWheelAxis  = new OneAxisInput("Mouse ScrollWheel");
     }
 
-    public void UpdateAxis()
+    public void ResetDevice()
+    {
+        keyboardAxis.ResetAxis();
+        mouseAxis.ResetAxis();
+        mouseWheelAxis.ResetAxis();
+        ResetButtons();
+    }
+
+    public void UpdateDevice()
+    {
+        UpdateAxis();   
+        UpdateButtons();
+    }
+
+    public void LateUpdateDevice()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void UpdateAxis()
     {
         keyboardAxis.UpdateAxis();
         mouseAxis.UpdateAxis();
         mouseWheelAxis.UpdateAxis();
     }
 
-    public void UpdateButtons()
+    private void UpdateButtons()
     {
-        for (int i = 0; i < (int)InputButtonValue.COUNT; ++i)
+        for (int i = 0; i < buttonCount; ++i)
         {
+            sbyte value = buttonValues[i];
+
+            if (Input.GetKeyDown(keyLookup[(InputButtonValue) i]))
+            {
+                buttonValues[i] = (int) InputButtonState.Down;
+                continue;
+            }
+
+            if (Input.GetKeyDown(keyLookup[(InputButtonValue) i]))
+            {
+                buttonValues[i] = (int) InputButtonState.Down;
+                continue;
+            }
+
+            if (Input.GetKeyDown(keyLookup[(InputButtonValue) i]))
+            {
+                buttonValues[i] = (int) InputButtonState.Down;
+                continue;
+            }
+
+
             switch (buttonValues[i])
             {
-                case (int)InputButtonState.None:
-
-                    if (Input.GetKeyDown(keyLookup[(InputButtonValue) i]))
-                    {
-                        buttonValues[i] = (int)InputButtonState.Down;
-                    }
-
-                    break;
-                case (int)InputButtonState.Down:
+                case (int) InputButtonState.Down:
 
                     if (Input.GetKey(keyLookup[(InputButtonValue) i]))
                     {
-                        buttonValues[i] = (int)InputButtonState.Pressed;
+                        buttonValues[i] = (int) InputButtonState.Pressed;
                         break;
                     }
 
-                    buttonValues[i] = (int)InputButtonState.Up;
+                    buttonValues[i] = (int) InputButtonState.Up;
 
-                    break;
-                case (int)InputButtonState.Pressed:
+                    continue;
+                case (int) InputButtonState.Pressed:
 
                     if (Input.GetKeyUp(keyLookup[(InputButtonValue) i]))
                     {
                         buttonValues[i] = (int) InputButtonState.Up;
                     }
 
-                    break;
-                case(int)InputButtonState.Up:
+                    continue;
+                case(int) InputButtonState.Up:
 
                     buttonValues[i] = (int) InputButtonState.None;
-                    break;
+                    continue;
             }
         }
     }
 
-    public void LateUpdateAxis()
+    public float GetAxis(InputAxisValue a_value)
     {
-        throw new NotImplementedException();
+        switch (a_value)
+        {
+            case InputAxisValue.LeftX:
+                return keyboardAxis.XAxis.Value;
+            case InputAxisValue.LeftY:
+                return keyboardAxis.YAxis.Value;
+            case InputAxisValue.RightX:
+                return mouseAxis.XAxis.Value;
+            case InputAxisValue.RightY:
+                return mouseAxis.YAxis.Value;
+        }
+
+        return 0;
     }
 
-    public void LateUpdateButtons()
+    public int GetButton(InputButtonValue a_value)
     {
-        throw new NotImplementedException();
+        return buttonValues[(int) a_value];
     }
 
-    public void ResetDevice()
+    private void ResetButtons()
     {
-        throw new NotImplementedException();
-    }
-
-    public float GetAxis(InputButtonValue a_value)
-    {
-
-        Input.GetAxis()
-    }
-
-    public float GetValue(InputButtonValue a_value)
-    {
-        throw new NotImplementedException();
+        for (int i = 0; i < buttonValues.Length; i++)
+        {
+            buttonValues[i] = 0;
+        }
     }
 }

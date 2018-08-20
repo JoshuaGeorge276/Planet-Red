@@ -14,5 +14,10 @@ public class OneAxisInput
     {
         Value = Input.GetAxis(axisName);
     }
+
+    public void ResetAxis()
+    {
+        Value = 0f;
+    }
 }
 

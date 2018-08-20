@@ -17,4 +17,10 @@ public class TwoAxisInput
         XAxis.UpdateAxis();
         YAxis.UpdateAxis();
     }
+
+    public void ResetAxis()
+    {
+        XAxis.ResetAxis();
+        YAxis.ResetAxis();
+    }
 }

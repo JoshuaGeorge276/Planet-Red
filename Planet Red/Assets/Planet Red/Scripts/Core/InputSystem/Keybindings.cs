@@ -9,8 +9,8 @@ public class Presets
     {
         Bindings bindings = new Bindings
         {
-            LeftXAxis = "horizontal",
-            LeftYAxis = "vertical",
+            LeftXAxis = "Horizontal",
+            LeftYAxis = "Vertical",
             RightXAxis = "Mouse X",
             RightYAxis = "Mouse Y",
 
