@@ -52,6 +52,6 @@ public class KeyboardHandler : IDeviceHandler
 
     public bool GetButtonUp(InputButtonValue a_value)
     {
-        return keyboardDevice.GetButton(a_value) == (int) InputButtonState.Pressed;
+        return keyboardDevice.GetButton(a_value) == (int) InputButtonState.Up;
     }
 }

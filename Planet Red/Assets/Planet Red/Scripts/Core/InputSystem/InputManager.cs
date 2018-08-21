@@ -41,20 +41,22 @@ public class InputManager : SingletonBehaviour<InputManager>
 
 	    bool action1, action2, action3, action4;
 
-	    action1 = GetPlayer(0).Controller.Device.GetButtonPressed(InputButtonValue.Action1);
-	    action2 = GetPlayer(0).Controller.Device.GetButtonPressed(InputButtonValue.Action2);
-	    action3 = GetPlayer(0).Controller.Device.GetButtonPressed(InputButtonValue.Action3);
-	    action4 = GetPlayer(0).Controller.Device.GetButtonPressed(InputButtonValue.Action4);
+	    action1 = GetPlayer(0).Controller.Device.GetButtonDown(InputButtonValue.Action1);
+	    action2 = GetPlayer(0).Controller.Device.GetButtonDown(InputButtonValue.Action2);
+	    action3 = GetPlayer(0).Controller.Device.GetButtonDown(InputButtonValue.Action3);
+	    action4 = GetPlayer(0).Controller.Device.GetButtonDown(InputButtonValue.Action4);
+
+
 
         if(action1)
             Debug.Log("Action 1 pressed!");
-
+        
 	    if(action2)
 	        Debug.Log("Action 2 pressed!");
-
+        
 	    if(action3)
 	        Debug.Log("Action 3 pressed!");
-
+        
 	    if(action4)
 	        Debug.Log("Action 4 pressed!");
 	}

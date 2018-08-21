@@ -55,6 +55,9 @@ class KeyboardDevice : IInputDevice
         keyLookup[InputButtonValue.LeftTrigger]      = currentBindings.LeftTrigger;
         keyLookup[InputButtonValue.RightTrigger]     = currentBindings.RightTrigger;
 
+        keyLookup[InputButtonValue.LeftBumper]       = currentBindings.LeftBumper;
+        keyLookup[InputButtonValue.RightBumper]      = currentBindings.RightBumper;
+
         keyLookup[InputButtonValue.Start]            = currentBindings.Start;
         keyLookup[InputButtonValue.Return]           = currentBindings.Return;
         keyLookup[InputButtonValue.Select]           = currentBindings.Select;
@@ -98,52 +101,45 @@ class KeyboardDevice : IInputDevice
     {
         for (int i = 0; i < buttonCount; ++i)
         {
-            sbyte value = buttonValues[i];
+            sbyte currentValue = buttonValues[i];
+            KeyCode key = keyLookup[(InputButtonValue) i];
 
-            if (Input.GetKeyDown(keyLookup[(InputButtonValue) i]))
+            if(currentValue != 0)
+                Debug.Log("Break");
+
+            switch (currentValue)
             {
-                buttonValues[i] = (int) InputButtonState.Down;
-                continue;
-            }
+                 case (sbyte) InputButtonState.None:
 
-            if (Input.GetKeyDown(keyLookup[(InputButtonValue) i]))
-            {
-                buttonValues[i] = (int) InputButtonState.Down;
-                continue;
-            }
+                     if (Input.GetKeyDown(key))
+                         buttonValues[i] = (sbyte) InputButtonState.Down;
 
-            if (Input.GetKeyDown(keyLookup[(InputButtonValue) i]))
-            {
-                buttonValues[i] = (int) InputButtonState.Down;
-                continue;
-            }
+                     break;
+                 case (sbyte) InputButtonState.Down:
 
+                     if (Input.GetKey(key))
+                     {
+                         buttonValues[i] = (sbyte) InputButtonState.Pressed;
+                     }
+                     else if (Input.GetKeyUp(key))
+                     {
+                         buttonValues[i] = (sbyte) InputButtonState.Up;
+                     }
 
-            switch (buttonValues[i])
-            {
-                case (int) InputButtonState.Down:
+                     break;
+                 case (sbyte) InputButtonState.Pressed:
 
-                    if (Input.GetKey(keyLookup[(InputButtonValue) i]))
-                    {
-                        buttonValues[i] = (int) InputButtonState.Pressed;
-                        break;
-                    }
+                     if (Input.GetKeyUp(key))
+                         buttonValues[i] = (sbyte) InputButtonState.Up;
 
-                    buttonValues[i] = (int) InputButtonState.Up;
+                     break;
+                 case (sbyte) InputButtonState.Up:
+                     
+                     if (Input.GetKeyDown(key))
+                         buttonValues[i] = (sbyte) InputButtonState.Down;
 
-                    continue;
-                case (int) InputButtonState.Pressed:
-
-                    if (Input.GetKeyUp(keyLookup[(InputButtonValue) i]))
-                    {
-                        buttonValues[i] = (int) InputButtonState.Up;
-                    }
-
-                    continue;
-                case(int) InputButtonState.Up:
-
-                    buttonValues[i] = (int) InputButtonState.None;
-                    continue;
+                     buttonValues[i] = (sbyte) InputButtonState.None;
+                     break;
             }
         }
     }
@@ -172,9 +168,9 @@ class KeyboardDevice : IInputDevice
 
     private void ResetButtons()
     {
-        for (int i = 0; i < buttonValues.Length; i++)
-        {
-            buttonValues[i] = 0;
-        }
+        //for (int i = 0; i < buttonValues.Length; i++)
+        //{
+        //    buttonValues[i] = 0;
+        //}
     }
 }
